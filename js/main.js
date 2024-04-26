@@ -14,29 +14,32 @@
   // Initiate the wowjs
   new WOW().init();
 
-  // Sticky Navbar with Transition and Shadow
+  // Sticky Navbar with Transition
   $(window).scroll(function () {
-    const navbar = $(".sticky-top"); // Get the navbar element
+    const navbar = $(".sticky-top");
+    const dropdown = $(".dropdown-menu");
+    const threshold = $(window).width() <= 992 ? 40 : 54;
 
-    if ($(this).scrollTop() >50) {
-      navbar.addClass("shadow-sm").css("top", "0px");
-      navbar.addClass("scrolled"); // Add class for transition
+    if ($(this).scrollTop() > threshold) {
+      navbar.addClass("bg-dark").css("position", "fixed");
+      dropdown.addClass("bg-dark");
     } else {
-      navbar.removeClass("shadow-sm").css("top", "-100px");
-      navbar.removeClass("scrolled"); // Remove class for transition
+      navbar.removeClass("bg-dark").css("position", "relative");
+      dropdown.removeClass("bg-dark");
     }
   });
 
   // Back to top button
   $(window).scroll(function () {
-    if ($(this).scrollTop() > 50) {
+    const threshold = $(window).width() <= 992 ? 972 : 1220;
+    if ($(this).scrollTop() > threshold) {
       $(".back-to-top").fadeIn("slow");
     } else {
       $(".back-to-top").fadeOut("slow");
     }
   });
   $(".back-to-top").click(function () {
-    $("html, body").animate({ scrollTop: 0 }, 1500, "easeInOutExpo");
+    $("html, body").animate({ scrollTop: 0 }, 50, "easeInOutExpo");
     return false;
   });
 
@@ -89,7 +92,9 @@
   });
   $("#portfolio-flters li").on("click", function () {
     $("#portfolio-flters li").removeClass("active");
+    $("#portfolio-flters li").addClass("text-light");
     $(this).addClass("active");
+    $(this).removeClass("text-light");
 
     portfolioIsotope.isotope({ filter: $(this).data("filter") });
   });
