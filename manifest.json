@@ -1,0 +1,9 @@
+{
+    "name": "Reseal Canada",
+    "short_name": "Reseal",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#121212",
+    "theme_color": "#fdd635"
+  }
+  
