@@ -6,7 +6,14 @@ require("dotenv").config();
 
 const app = express();
 const port = 3000;
-app.use(cors());
+
+// Allow requests only from https://www.resealcanada.ca
+const corsOptions = {
+  origin: ["https://www.resealcanada.ca", "https://resealcanada.ca"],
+  optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -29,13 +36,15 @@ app.post("/submit-quote", (req, res) => {
       Email: ${email} \n
       Phone: ${mobile} \n
       Service: ${service} \n
-      Note: ${note || 'None provided'}`,
-      messagingServiceSid: 'MGee1f6ef3f1c345d73bcf6729097705c7',
+      Note: ${note || "None provided"}`,
+      messagingServiceSid: "MGee1f6ef3f1c345d73bcf6729097705c7",
       to: "+16474718184",
     })
     .then((message) => {
       console.log("SMS sent:", message.sid);
-      res.status(200).json({ message: "Quote request submitted successfully!" });
+      res
+        .status(200)
+        .json({ message: "Quote request submitted successfully!" });
     })
     .catch((error) => {
       console.error("Error sending SMS:", error);
