@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /js/backend.js
+
+Sitemap: https://resealcanada.ca/sitemap.xml
