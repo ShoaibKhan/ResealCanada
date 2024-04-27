@@ -1,9 +1,26 @@
 {
-    "name": "Reseal Canada",
-    "short_name": "Reseal",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#121212",
-    "theme_color": "#fdd635"
+  "name": "Reseal Canada",
+  "short_name": "Reseal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#fdd635",
+  "icons": [
+    {
+      "src": "img/logo.webp",
+      "sizes": "144x144",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    { "src": "img/logo.webp", "sizes": "512x512", "type": "image/webp" },
+    {
+      "src": "img/logo.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "maskable any"
+    }
+  ],
+  "splash_screen": {
+    "full_screen": true
   }
-  
+}
