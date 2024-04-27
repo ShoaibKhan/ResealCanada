@@ -30,7 +30,7 @@ app.post("/submit-quote", async (req, res) => {
         Service: ${service} \n
         Note: ${note || "None provided"}`,
       messagingServiceSid: "MGee1f6ef3f1c345d73bcf6729097705c7",
-      to: "+16474718184",
+      to: "+12505747325",
     });
     console.log("SMS sent:", message.sid);
     res.status(200).json({ message: "Quote request submitted successfully!" });
