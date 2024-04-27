@@ -9,7 +9,7 @@ const port = 3000;
 
 // Allow requests only from https://www.resealcanada.ca
 const corsOptions = {
-  origin: ["https://www.resealcanada.ca", "https://resealcanada.ca"],
+  origin: ["https://www.resealcanada.ca", "https://resealcanada.ca", "https://www.resealcanada.ca/submit-quote", "https://resealcanada.ca/submit-quote" ],
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
