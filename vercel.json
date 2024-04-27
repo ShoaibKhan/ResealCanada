@@ -2,8 +2,7 @@
   "version": 2,
   "functions": {
     "api/backend.js": {
-      "runtime": "nodejs20.x",
-      "handler": "api/backend.handler"
+      "runtime": "nodejs20.x"
     }
   },
   "rewrites": [
