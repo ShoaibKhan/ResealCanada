@@ -107,7 +107,7 @@
 
     $.ajax({
       type: "POST",
-      url: "https://www.resealcanada.ca/submit-quote",
+      url: "https://resealcanada.ca/submit-quote",
       data: formData,
       success: function (data) {
         $("#successMessage").text(data.message).css("color", "green");
