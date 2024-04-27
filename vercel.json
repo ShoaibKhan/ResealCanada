@@ -1,11 +1,25 @@
 {
-  "version": 2,
-  "functions": {
-    "api/backend.js": {
-      "runtime": "nodejs20.x"
-    }
-  },
-  "rewrites": [
-    { "source": "/submit-quote", "destination": "/api/backend" }
-  ]
-}
+    "version": 2,
+    "builds": [
+      {
+        "src": "package.json",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "index.html"
+      },
+      {
+        "src": "/api/(.*)",
+        "dest": "api/backend.js"
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/(.*)",
+        "destination": "/api/backend.js"
+      }
+    ]
+  }

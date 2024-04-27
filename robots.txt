@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /js/backend.js
+Disallow: /api/backend.js
 
 Sitemap: https://resealcanada.ca/sitemap.xml

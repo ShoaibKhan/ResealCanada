@@ -14,9 +14,11 @@
   "license": "ISC",
   "dependencies": {
     "@vercel/analytics": "^1.2.2",
+    "@vercel/edge": "^1.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "helmet": "^7.1.0",
     "node-fetch": "^3.3.2",
     "twilio": "^5.0.4"
