@@ -2,7 +2,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const path = require("path");
 require("dotenv").config();
 
 const app = express();
@@ -16,15 +15,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static("."));
+app.use(bodyParser.json());
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../index.html"));
-});
 
 app.post("/submit-quote", (req, res) => {
   const { name, email, mobile, service, note } = req.body;
