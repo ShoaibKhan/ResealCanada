@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
+const helmet = require('helmet');
 
 const app = express();
 const port = 3000;
@@ -12,6 +13,7 @@ const corsOptions = {
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
+app.use(helmet());
 app.use(cors(corsOptions));
 
 app.use(bodyParser.urlencoded({ extended: false }));
