@@ -4,8 +4,5 @@
     "api/backend.js": {
       "runtime": "nodejs20.x"
     }
-  },
-  "rewrites": [
-    { "source": "/submit-quote", "destination": "/api/backend" }
-  ]
+  }
 }
