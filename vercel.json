@@ -3,7 +3,6 @@
   "functions": {
     "api/backend.js": {
       "runtime": "nodejs20.x",
-      "method": "POST",
       "handler": "api/backend.handler"
     }
   },
