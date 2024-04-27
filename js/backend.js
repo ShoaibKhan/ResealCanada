@@ -6,8 +6,9 @@ require("dotenv").config();
 
 const app = express();
 const port = 3000;
+
 const corsOptions = {
-  origin: "*",
+  origin: process.env.BASE_URL,
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
