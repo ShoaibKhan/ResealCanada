@@ -98,4 +98,27 @@
 
     portfolioIsotope.isotope({ filter: $(this).data("filter") });
   });
+
+  // Quote Submit
+  $("#quoteFormItem").submit(function (e) {
+    e.preventDefault();
+
+    const formData = $(this).serialize();
+
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:3000/submit-quote",
+      data: formData,
+      success: function (data) {
+        $("#successMessage").text(data.message).css("color", "green");
+        setTimeout(function () {
+          $("#quoteFormItem")[0].reset();
+          $("#successMessage").text("");
+        }, 10000);
+      },
+      error: function () {
+        $("#errorMessage").text("An error occurred, please try again.").css("color", "red");
+      },
+    });
+  });
 })(jQuery);
