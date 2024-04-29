@@ -1,35 +1,19 @@
- 
+** Proprietary License Agreement **
 
- => FREE HTML TEMPLATE LICENSE BY HTML Codex
+This Proprietary License Agreement ("Agreement") is a legal agreement for the website Reseal Canada (resealcanada.ca) and its associated source code ("Software").
 
- All free HTML templates by HTML Codex are licensed under a Creative Commons Attribution 4.0 International License which means you are not allowed to remove the author’s credit link/attribution link/backlink.
+Ownership: The Software is owned by Licensor and is protected by copyright laws and international treaties. Licensee acknowledges that the Software is confidential and proprietary to Licensor.
+License Grant: Licensor grants Licensee a non-exclusive, non-transferable license to use the Software solely for the purpose of operating the website Reseal Canada (resealcanada.ca) during the term of this Agreement.
 
- When you download or use our free HTML templates, it will attribute the following conditions.
-
-
- => YOU ARE ALLOWED
-
-      1. You are allowed to use for your personal and commercial purposes.
-
-      2. You are allowed to modify/customize however you like.
-
-      3. You are allowed to convert/port for use for any CMS.
-
-      4. You are allowed to share/distribute under the HTML Codex brand name.
-
-      5. You are allowed to put a screenshot or a link on your blog posts or any other websites.
-
-
- => YOU ARE NOT ALLOWED
-
-      1. You are not allowed to remove the author’s credit link/attribution link/backlink without purchasing Credit Removal License ( https://htmlcodex.com/credit-removal ).
-
-      2. You are not allowed to sell, resale, rent, lease, license, or sub-license.
-
-      3. You are not allowed to upload on your template websites or template collection websites or any other third party websites without our permission.
-
- This license can be terminated if you breach any of these conditions.
-
- Please contact us (https://htmlcodex.com/contact) if you have any query.
-
- => PURCHASE CREDIT REMOVAL LICENSE ( https://htmlcodex.com/credit-removal )
+Restrictions: Licensee shall not:
+1. Copy, modify, alter, or create derivative works of the Software;
+2. Distribute, sublicense, lease, or rent the Software to any third party;
+3. Use the Software for any purpose other than operating the website resealcanada.ca;
+4. Reverse engineer, decompile, or disassemble the Software;
+5. Remove or alter any proprietary notices or markings on the Software.
+6. Confidentiality: Licensee shall keep the Software confidential and shall not disclose it to anyone without the prior written consent of Licensor.
+7. Term and Termination: This Agreement shall remain in effect until terminated by Licensor. Upon termination, Licensee shall immediately cease using the Software and destroy all copies of the Software.
+8. Warranty Disclaimer: The Software is provided "as is" and "as available" without warranty of any kind, express or implied.
+8. Limitation of Liability: In no event shall Licensor be liable for any damages, including but not limited to incidental, consequential, or punitive damages, arising out of the use or inability to use the Software.
+9. Governing Law: This Agreement shall be governed by and construed in accordance with the laws of Ontario, Canada.
+10. Entire Agreement: This Agreement constitutes the entire agreement between Licensor and Licensee and supersedes all prior or contemporaneous
