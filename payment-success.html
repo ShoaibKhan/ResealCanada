@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Booking Confirmed | Reseal Canada</title>
+    <meta name="theme-color" content="#121212">
+
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon" sizes="16x16">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&family=Roboto:wght@500;700;900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/booking.css" rel="stylesheet">
+</head>
+
+<body class="has-page-hero">
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a href="index.html" class="navbar-brand d-flex align-items-center">
+                <h2 class="m-0 text-primary">Re</h2>
+                <h2 class="m-0 text-white">seal Canada</h2>
+            </a>
+            <a href="tel:+16477065123" class="btn btn-primary d-none d-lg-inline-flex ms-auto"><i
+                    class="fa fa-phone-alt me-2"></i>647-706-5123</a>
+        </div>
+    </nav>
+
+    <main class="sec sec--soft" style="padding-top: 140px; min-height: 100vh;">
+        <div class="container">
+            <div class="bk" style="max-width: 640px;">
+
+                <!-- Waiting for the processor to confirm -->
+                <div id="pending" class="bk-card text-center" style="padding: 44px 30px;">
+                    <div class="bk-success-ring" style="background:#fffae3;color:#7a6300;">
+                        <i class="fa fa-spinner fa-spin"></i>
+                    </div>
+                    <h1 class="h3 mb-3">Confirming your payment…</h1>
+                    <p class="text-muted-2 mb-4">This usually takes a few seconds. You don't need to do anything.</p>
+                    <button id="retry" class="bk-next" style="max-width:220px;margin:0 auto;">Check Again</button>
+                </div>
+
+                <!-- Confirmed -->
+                <div id="done" style="display:none;">
+                    <div class="bk-card text-center" style="padding: 44px 30px 34px;">
+                        <div class="bk-success-ring"><i class="fa fa-check"></i></div>
+                        <h1 class="h3 mb-3">You're booked in</h1>
+                        <p class="text-muted-2 mb-0">Your deposit has cleared and we've emailed you a copy of
+                            everything below. We'll be in touch to confirm the details.</p>
+                        <div class="ref mt-4" id="refPill" style="display:inline-block;padding:9px 18px;border-radius:100px;background:var(--light);border:1px solid var(--line);font-family:Roboto,sans-serif;font-weight:700;font-size:.9rem;"></div>
+                    </div>
+
+                    <div class="bk-card">
+                        <p class="bk-card-title">Your booking</p>
+                        <div id="summary"></div>
+                    </div>
+
+                    <div class="notice">
+                        <i class="fa fa-cloud-sun-rain"></i>
+                        <div><strong>About your date.</strong> Sealer can't be applied in rain or below about 10°C,
+                            so your date is a target rather than a promise. If the weather moves it we'll tell you as
+                            early as we can and reschedule at no cost.</div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="index.html" class="btn btn-primary btn-lg-cta">Back to Home</a>
+                    </div>
+                </div>
+
+                <!-- Couldn't find it -->
+                <div id="failed" class="bk-card text-center" style="display:none;padding:44px 30px;">
+                    <div class="bk-success-ring" style="background:#fdecec;color:#9b1c1c;"><i
+                            class="fa fa-exclamation"></i></div>
+                    <h1 class="h3 mb-3">We couldn't confirm that yet</h1>
+                    <p class="text-muted-2 mb-4">If you were charged, your booking is safe — the confirmation email is
+                        on its way. If you're not sure, call us and we'll check it in a moment.</p>
+                    <a href="tel:+16477065123" class="btn btn-primary btn-lg-cta"><i
+                            class="fa fa-phone-alt me-2"></i>647-706-5123</a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        (function () {
+            var params = new URLSearchParams(location.search);
+            var ref = params.get('ref') || '';
+            try { if (!ref) ref = localStorage.getItem('rscRef') || ''; } catch (e) { }
+
+            var pending = document.getElementById('pending');
+            var done = document.getElementById('done');
+            var failed = document.getElementById('failed');
+            var attempts = 0;
+
+            function esc(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+                });
+            }
+
+            function render(sum) {
+                var rows = [
+                    ['Service', sum.service], ['Details', sum.details],
+                    ['Preferred date', sum.date], ['Estimate', sum.estimate],
+                    ['Deposit paid', sum.depositPaid], ['Paid by', sum.paymentMethod],
+                ].filter(function (r) { return r[1]; });
+
+                document.getElementById('summary').innerHTML = rows.map(function (r) {
+                    return '<div class="bk-est-line" style="color:var(--ink-2);border-bottom:1px solid var(--line);padding:10px 0;">' +
+                        '<span>' + esc(r[0]) + '</span><span style="color:var(--ink);font-weight:600;">' +
+                        esc(r[1]) + '</span></div>';
+                }).join('');
+                document.getElementById('refPill').textContent = 'Reference ' + esc(sum.reference || ref);
+
+                pending.style.display = 'none';
+                failed.style.display = 'none';
+                done.style.display = 'block';
+                // Only clear saved state once payment is actually confirmed
+                try { localStorage.removeItem('rscRef'); } catch (e) { }
+            }
+
+            function check() {
+                if (!ref) { pending.style.display = 'none'; failed.style.display = 'block'; return; }
+                attempts++;
+                fetch('/api/verify-payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ref: ref }),
+                })
+                    .then(function (r) { return r.json(); })
+                    .then(function (j) {
+                        if (j && j.paid) { render(j.summary || {}); return; }
+                        // The webhook can land a beat after the browser does
+                        if (attempts < 6) { setTimeout(check, 2500); }
+                        else { pending.style.display = 'none'; failed.style.display = 'block'; }
+                    })
+                    .catch(function () {
+                        if (attempts < 6) { setTimeout(check, 2500); }
+                        else { pending.style.display = 'none'; failed.style.display = 'block'; }
+                    });
+            }
+
+            document.getElementById('retry').addEventListener('click', function () {
+                attempts = 0;
+                pending.style.display = 'block';
+                failed.style.display = 'none';
+                check();
+            });
+
+            check();
+        })();
+    </script>
+</body>
+
+</html>

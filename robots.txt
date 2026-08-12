@@ -1,4 +1,7 @@
 User-agent: *
-Disallow: /api/backend.js
+Allow: /
+
+# Serverless endpoints — the job board carries customer details
+Disallow: /api/
 
 Sitemap: https://resealcanada.ca/sitemap.xml
