@@ -915,6 +915,13 @@
                             </div>
 
                             <div id="bkPayBlock">
+                                <!-- Shown while PAYMENTS_ENABLED is false in js/booking.js -->
+                                <div class="notice notice--sm" id="bkPayOffNote" style="display:none;">
+                                    <i class="fa fa-lock"></i>
+                                    <div><strong>Online deposits aren't switched on yet.</strong> You can still send
+                                        your request below and we'll be in touch within 2 business days — nothing is
+                                        lost.</div>
+                                </div>
                                 <div class="bk-pay-btns">
                                     <button type="button" class="bk-btn-pay is-card" id="bkPayCard" disabled>
                                         <i class="fa fa-credit-card"></i>

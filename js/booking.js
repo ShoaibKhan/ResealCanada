@@ -25,6 +25,15 @@
   var SEASON_START = 4; // May
   var SEASON_END = 9;   // October
 
+  /* ⚠ FLIP TO true ONCE HELCIM + PAYPAL CREDENTIALS ARE SET IN VERCEL.
+     While false the deposit option and both pay buttons still render —
+     so the layout can be reviewed exactly as it will ship — but they are
+     disabled and clearly marked, and the click handlers refuse to fire.
+     "Just send my request" is unaffected and fully working.
+     The server refuses too (create-helcim-checkout / create-paypal-order
+     both return "not configured"), so this is presentation, not security. */
+  var PAYMENTS_ENABLED = false;
+
   var SERVICES = {
     driveway: 'Driveway Sealing & Crack Filling',
     pressure: 'Pressure Washing',
@@ -330,6 +339,11 @@
     payBlock.style.display = hasEstimate ? '' : 'none';
     optDeposit.style.display = hasEstimate ? '' : 'none';
     if (estConsent) estConsent.style.display = hasEstimate ? '' : 'none';
+
+    // Deposits are switched off until the processors are configured
+    var offNote = $('bkPayOffNote');
+    if (offNote) offNote.style.display = (hasEstimate && !PAYMENTS_ENABLED) ? '' : 'none';
+    if (optDeposit) optDeposit.classList.toggle('is-off', !PAYMENTS_ENABLED);
     if (checkoutNote) {
       checkoutNote.textContent = hasEstimate
         ? 'Two ways to finish — both send your details straight to us.'
@@ -439,9 +453,12 @@
   }
   function syncConsent() {
     var ok = consentOk();
-    ['bkPayCard', 'bkPayPaypal', 'bkSubmitNoPay'].forEach(function (id) {
+    var send = $('bkSubmitNoPay');
+    if (send) send.disabled = !ok;
+    // Pay buttons need consent AND payments switched on
+    ['bkPayCard', 'bkPayPaypal'].forEach(function (id) {
       var el = $(id);
-      if (el) el.disabled = !ok;
+      if (el) el.disabled = !ok || !PAYMENTS_ENABLED;
     });
     if (ok) showErr('err4', '');
   }
@@ -509,6 +526,7 @@
   var cardBtn = $('bkPayCard');
   if (cardBtn) {
     cardBtn.addEventListener('click', function () {
+      if (!PAYMENTS_ENABLED) return;
       if (!consentOk()) { showErr('err4', 'Please tick both boxes to continue.'); return; }
       var original = cardBtn.innerHTML;
       cardBtn.disabled = true;
@@ -576,6 +594,7 @@
   var ppBtn = $('bkPayPaypal');
   if (ppBtn) {
     ppBtn.addEventListener('click', function () {
+      if (!PAYMENTS_ENABLED) return;
       if (!consentOk()) { showErr('err4', 'Please tick both boxes to continue.'); return; }
       var original = ppBtn.innerHTML;
       ppBtn.disabled = true;

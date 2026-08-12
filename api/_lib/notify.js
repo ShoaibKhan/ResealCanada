@@ -185,6 +185,9 @@ function statusUrl(ref, status) {
   return `${siteUrl()}/api/update-job?ref=${encodeURIComponent(ref)}&status=${status}&sig=${sign(ref + status)}`;
 }
 
+/* Returns { email, sms } so callers can tell whether the owner actually
+   heard about the job. A request nobody receives is a lost customer, so
+   this is worth knowing rather than assuming. */
 async function alertOwner(job, kind) {
   const paid = kind === 'paid';
   const banner = paid
@@ -205,7 +208,7 @@ async function alertOwner(job, kind) {
     'Reseal Canada · automated job alert'
   );
 
-  await sendEmail({
+  const email = await sendEmail({
     to: OWNER_EMAILS,
     subject: paid
       ? `Deposit paid — ${job.name} (${job.ref})`
@@ -214,12 +217,14 @@ async function alertOwner(job, kind) {
     replyTo: job.email,
   });
 
-  await sendOwnerSms(
+  const sms = await sendOwnerSms(
     (paid ? 'RESEAL — DEPOSIT PAID\n' : 'RESEAL — NEW QUOTE REQUEST\n') +
     `${job.name}\n${job.phone}\n${job.svcLabel}\n` +
     `${job.needsVisit ? 'On-site quote' : estimateLabel(job)}\n` +
     `${fmtDate(job.date)}\n${job.addr}\nRef ${job.ref}`
   );
+
+  return { email, sms };
 }
 
 /* ------------------------------------------------------------------
@@ -311,16 +316,23 @@ async function notifyIfNeeded(job) {
   }
 }
 
-/* No-payment path — customer asked for a quote without paying a deposit. */
+/* No-payment path — customer asked for a quote without paying a deposit.
+   Returns whether the owner was reached by ANY channel, so the caller can
+   decide whether the submission genuinely landed. */
 async function notifyNewRequest(job) {
+  let owner = { email: false, sms: false };
   try {
-    await alertOwner(job, 'new');
-    await emailCustomerReceipt(job);
-    return true;
+    owner = await alertOwner(job, 'new');
   } catch (e) {
-    console.error('notifyNewRequest failed:', e && e.message);
-    return false;
+    console.error('owner alert failed:', e && e.message);
   }
+  try {
+    await emailCustomerReceipt(job);
+  } catch (e) {
+    // The customer's copy is a courtesy; never fail the request over it
+    console.error('customer receipt failed:', e && e.message);
+  }
+  return { ...owner, reached: !!(owner.email || owner.sms) };
 }
 
 module.exports = {

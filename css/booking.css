@@ -345,6 +345,26 @@
   transition: var(--t);
 }
 .bk-pay-opt.sel { border-color: var(--dark); background: #fffdf3; box-shadow: var(--shadow-s); }
+
+/* Deposits switched off: still visible so the layout can be reviewed,
+   but visibly not available. See PAYMENTS_ENABLED in js/booking.js. */
+.bk-pay-opt.is-off { opacity: 0.55; }
+.bk-pay-opt.is-off h5::after {
+  content: "Coming soon";
+  display: inline-block;
+  margin-left: 9px;
+  padding: 3px 9px;
+  border-radius: 100px;
+  background: var(--light);
+  border: 1px solid var(--line-2);
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  vertical-align: middle;
+}
 .bk-pay-opt h5 { margin: 0 0 5px; font-size: 1rem; }
 .bk-pay-opt p { margin: 0; font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
 
