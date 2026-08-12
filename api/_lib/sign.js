@@ -16,7 +16,6 @@ const crypto = require('crypto');
 function secret() {
   return (
     process.env.APP_SECRET ||
-    process.env.PAYPAL_CLIENT_SECRET ||
     process.env.HELCIM_API_TOKEN ||
     process.env.KV_REST_API_TOKEN ||
     'reseal-insecure-fallback-set-APP_SECRET'

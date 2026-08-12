@@ -2,11 +2,10 @@
    Persistence for quote requests and paid bookings, backed by
    Upstash Redis (Vercel → Storage → Upstash → Redis).
 
-   WHY THIS EXISTS: Helcim only echoes back an `invoiceNumber` and
-   PayPal only a `custom_id` — both just short strings, not a place to
-   store a job. So we mint the reference ourselves, save the real
-   record here keyed by it, and look it up again when the webhook says
-   payment succeeded.
+   WHY THIS EXISTS: Helcim only echoes back an `invoiceNumber` — a
+   short string, not a place to store a job. So we mint the reference
+   ourselves, save the real record here keyed by it, and look it up
+   again when the webhook says payment succeeded.
 
    Beyond that, this file also backs the owner's job board: every
    record is indexed in a sorted set by creation time, which is the
@@ -34,8 +33,8 @@ function redis() {
 }
 
 function newRef() {
-  // Short and field-safe — fits Helcim's invoiceNumber and PayPal's
-  // custom_id length limits with room to spare.
+  // Short and field-safe — fits Helcim's invoiceNumber length limit
+  // with room to spare.
   return 'RSC' + Date.now().toString(36).toUpperCase() +
     Math.random().toString(36).slice(2, 6).toUpperCase();
 }

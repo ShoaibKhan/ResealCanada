@@ -25,13 +25,13 @@
   var SEASON_START = 4; // May
   var SEASON_END = 9;   // October
 
-  /* ⚠ FLIP TO true ONCE HELCIM + PAYPAL CREDENTIALS ARE SET IN VERCEL.
-     While false the deposit option and both pay buttons still render —
-     so the layout can be reviewed exactly as it will ship — but they are
-     disabled and clearly marked, and the click handlers refuse to fire.
+  /* ⚠ FLIP TO true ONCE HELCIM CREDENTIALS ARE SET IN VERCEL.
+     While false the deposit option and the pay button still render — so
+     the layout can be reviewed exactly as it will ship — but they are
+     disabled and clearly marked, and the click handler refuses to fire.
      "Just send my request" is unaffected and fully working.
-     The server refuses too (create-helcim-checkout / create-paypal-order
-     both return "not configured"), so this is presentation, not security. */
+     The server refuses too (create-helcim-checkout returns "not
+     configured"), so this is presentation, not security. */
   var PAYMENTS_ENABLED = false;
 
   var SERVICES = {
@@ -455,11 +455,9 @@
     var ok = consentOk();
     var send = $('bkSubmitNoPay');
     if (send) send.disabled = !ok;
-    // Pay buttons need consent AND payments switched on
-    ['bkPayCard', 'bkPayPaypal'].forEach(function (id) {
-      var el = $(id);
-      if (el) el.disabled = !ok || !PAYMENTS_ENABLED;
-    });
+    // The pay button needs consent AND payments switched on
+    var pay = $('bkPayCard');
+    if (pay) pay.disabled = !ok || !PAYMENTS_ENABLED;
     if (ok) showErr('err4', '');
   }
   ['bk_c_estimate', 'bk_c_terms'].forEach(function (id) {
@@ -474,10 +472,8 @@
     if (optDep) optDep.classList.toggle('sel', dep);
     if (optNo) optNo.classList.toggle('sel', !dep);
   }
-  ['bkPayCard', 'bkPayPaypal'].forEach(function (id) {
-    var el = $(id);
-    if (el) el.addEventListener('mouseenter', function () { markOpt(true); });
-  });
+  var payHover = $('bkPayCard');
+  if (payHover) payHover.addEventListener('mouseenter', function () { markOpt(true); });
   var noPayBtn = $('bkSubmitNoPay');
   if (noPayBtn) noPayBtn.addEventListener('mouseenter', function () { markOpt(false); });
 
@@ -552,23 +548,25 @@
           cardBtn.innerHTML = original;
           cardBtn.disabled = false;
           showErr('err4', (e && e.message) ||
-            'We could not open card checkout. Please try PayPal, or call 647-706-5123.');
+            "We could not open card checkout. Please call 647-706-5123 and we'll take your " +
+            "deposit over the phone, or send your request without one.");
         });
     });
   }
 
+  var LOAD_FAIL = "Card checkout could not load. Please call 647-706-5123, or send your " +
+    'request without a deposit and we\'ll be in touch.';
+
   function openHelcim(token) {
     function go() {
       try { appendHelcimPayIframe(token); }
-      catch (e) { showErr('err4', 'Card checkout could not load. Please try PayPal or call 647-706-5123.'); }
+      catch (e) { showErr('err4', LOAD_FAIL); }
     }
     if (typeof appendHelcimPayIframe === 'function') { go(); return; }
     var s = document.createElement('script');
     s.src = 'https://secure.helcim.app/helcim-pay/services/start.js';
     s.onload = go;
-    s.onerror = function () {
-      showErr('err4', 'Card checkout could not load. Please try PayPal or call 647-706-5123.');
-    };
+    s.onerror = function () { showErr('err4', LOAD_FAIL); };
     document.head.appendChild(s);
   }
 
@@ -586,40 +584,8 @@
       window.location.href = '/payment-success?ref=' + encodeURIComponent(ref);
     } else if (d.eventStatus === 'ABORTED') {
       try { if (typeof removeHelcimPayIframe === 'function') removeHelcimPayIframe(); } catch (e) {}
-      showErr('err4', 'Card payment was cancelled — no charge was made. You can try again or use PayPal.');
+      showErr('err4', 'Card payment was cancelled — no charge was made. You can try again, ' +
+        'or send your request without a deposit.');
     }
   });
-
-  /* ---------- Pay deposit with PayPal ---------- */
-  var ppBtn = $('bkPayPaypal');
-  if (ppBtn) {
-    ppBtn.addEventListener('click', function () {
-      if (!PAYMENTS_ENABLED) return;
-      if (!consentOk()) { showErr('err4', 'Please tick both boxes to continue.'); return; }
-      var original = ppBtn.innerHTML;
-      ppBtn.disabled = true;
-      ppBtn.textContent = 'Opening PayPal…';
-      showErr('err4', '');
-
-      fetch('/api/create-paypal-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(collect()),
-      })
-        .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
-        .then(function (res) {
-          if (!res.ok || !res.j || !res.j.approveUrl) {
-            throw new Error((res.j && res.j.error) || 'paypal failed');
-          }
-          try { localStorage.setItem('rscRef', res.j.ref); } catch (e) {}
-          window.location.href = res.j.approveUrl;
-        })
-        .catch(function (e) {
-          ppBtn.innerHTML = original;
-          ppBtn.disabled = false;
-          showErr('err4', (e && e.message) ||
-            'We could not open PayPal. Please try card, or call 647-706-5123.');
-        });
-    });
-  }
 })();

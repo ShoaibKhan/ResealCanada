@@ -1,10 +1,10 @@
 /* ============================================================
    Builds the normalized job record that every entry point stores.
 
-   One place, because three endpoints create jobs (quote request,
-   Helcim checkout, PayPal order) and a field drifting between them
-   is exactly the kind of bug nobody notices until an owner alert
-   comes through with a blank address.
+   One place, because two endpoints create jobs (quote request and
+   Helcim checkout) and a field drifting between them is exactly the
+   kind of bug nobody notices until an owner alert comes through with
+   a blank address.
    ============================================================ */
 
 const { computeEstimate, consentRecord } = require('./pricing');

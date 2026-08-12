@@ -1,8 +1,8 @@
 /* ============================================================
    "Is this reference paid?" — used by payment-success.html to render
    the confirmation, and by its retry button for the rare case where
-   the customer's browser arrives before the Helcim webhook or PayPal
-   capture has finished.
+   the customer's browser arrives before the Helcim webhook has
+   finished.
 
    Processor-agnostic: reads the same Redis row every payment path
    writes to. `notified` is only ever set after a path independently

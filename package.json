@@ -2,7 +2,7 @@
   "name": "resealcanada",
   "version": "2.0.0",
   "private": true,
-  "description": "Reseal Canada — static site with estimate widget, Helcim + PayPal deposits, and an owner job board",
+  "description": "Reseal Canada — static site with estimate widget, Helcim deposits, and an owner job board",
   "scripts": {
     "check-parity": "node scripts/check-parity.js"
   },

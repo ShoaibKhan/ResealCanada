@@ -387,13 +387,11 @@
 }
 .bk-btn-pay:disabled { opacity: 0.45; cursor: not-allowed; }
 
-/* NB: these modifiers are `is-card` / `is-paypal`, not `card` / `paypal`.
-   A bare `.card` collides with Bootstrap's card component, which sets
-   flex-direction:column and stacks the button's label vertically. */
+/* NB: the modifier is `is-card`, not a bare `card` — that collides with
+   Bootstrap's card component, which sets flex-direction:column and stacks
+   the button's label vertically. */
 .bk-btn-pay.is-card { background: var(--dark); color: var(--primary); }
 .bk-btn-pay.is-card:hover:not(:disabled) { background: #000; transform: translateY(-2px); }
-.bk-btn-pay.is-paypal { background: #ffc439; color: #12212f; }
-.bk-btn-pay.is-paypal:hover:not(:disabled) { filter: brightness(1.04); transform: translateY(-2px); }
 
 .bk-consent {
   background: var(--light);

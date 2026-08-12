@@ -8,9 +8,9 @@
        hour. This replaces the old Firebase function's Twilio call.
 
    Idempotent where it matters: `notified` lives on the same Redis row
-   as the job, so whichever payment path lands first (Helcim webhook or
-   PayPal capture) sends the emails and the rest no-op. Closing the tab
-   right after paying must never mean nobody gets told.
+   as the job, so the payment webhook can fire more than once without
+   sending twice. Closing the tab right after paying must never mean
+   nobody gets told.
 
    Nothing here ever throws. A message failing to send must not roll
    back a payment that already succeeded.
@@ -300,8 +300,8 @@ async function emailCustomerReceipt(job) {
    Public entry points
 ------------------------------------------------------------------ */
 
-/* Payment path. Idempotent — safe to call from both the Helcim webhook
-   and the PayPal capture; only the first call sends anything. */
+/* Payment path. Idempotent — safe to call more than once for the same
+   job; only the first call sends anything. */
 async function notifyIfNeeded(job) {
   if (!job || job.notified) return false;
   const paidJob = { ...job, depositPaid: true, status: 'deposit_paid' };
